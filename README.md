@@ -9,5 +9,13 @@ A simple single player Rock, Paper, Scissors game for a web browser.
 This has been built as a simple practice for JavaScript and clean coding.
 
 ## Play
+
 Open [index.html](index.html) in the browser and follow the on-screen directions
 to play.
+
+## Test
+
+Open [test/test.html](test/test.html) in the browser to run unit tests.
+
+Tests are run using [MochaJS](https://mochajs.org/) and built using
+[ChaiJS](https://www.chaijs.com/).
