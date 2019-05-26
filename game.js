@@ -4,6 +4,12 @@ const choices = Object.freeze({
   SCISSORS: 'scissors',
 })
 
+const outcomes = Object.freeze({
+  WIN: 'win',
+  LOSS: 'loss',
+  TIE: 'tie'
+})
+
 function createScore() {
   return {
     wins: 0,

@@ -23,6 +23,22 @@ suite('choices', () => {
   test('no empty string properties', () => assert.noEmptyStrings(choices))
 })
 
+suite('outcomes', () => {
+  test('enumerates WIN, LOSS, TIE', () => {
+    assert.hasAllKeys(outcomes, ['WIN', 'LOSS', 'TIE'])
+  })
+
+  test('is frozen', () => {
+    assert.frozen(outcomes)
+  })
+
+  test('properties have unique values', () => {
+    assert.valuesAreUnique(outcomes)
+  })
+
+  test('no empty string properties', () => assert.noEmptyStrings(outcomes))
+})
+
 suite('Score', () => {
   test('has wins, losses, and ties', () => {
     const score = createScore()
@@ -31,6 +47,6 @@ suite('Score', () => {
       losses: 0,
       ties: 0,
     }
-    assert.deepEqual(score, expected);
+    assert.deepEqual(score, expected)
   })
 })
