@@ -1,25 +1,26 @@
 const { assert } = chai
 
+assert.valuesAreUnique = obj => {
+  const values = Object.values(obj)
+  const set = new Set(values)
+  assert.deepEqual(values, [...set])
+}
+assert.noEmptyStrings = obj => assert.notInclude(Object.values(obj), '')
+
 suite('choices', () => {
   test('enumerates ROCK, PAPER, SCISSORS', () => {
-    const hasChoice = choice => assert.property(choices, choice)
-    const expectedChoices = ['ROCK', 'PAPER', 'SCISSORS']
-    expectedChoices.forEach(hasChoice)
+    assert.hasAllKeys(choices, ['ROCK', 'PAPER', 'SCISSORS'])
   })
 
-  test('properties cannot be changed', () => {
-    assert(Object.isFrozen(choices), 'choices is not frozen')
+  test('is frozen', () => {
+    assert.frozen(choices)
   })
 
   test('properties have unique values', () => {
-    const values = Object.values(choices)
-    const set = new Set(values)
-    assert.deepEqual(values, [...set])
+    assert.valuesAreUnique(choices)
   })
 
-  test('no empty string properties', () => {
-    assert.notInclude(Object.values(choices), '')
-  })
+  test('no empty string properties', () => assert.noEmptyStrings(choices))
 })
 
 suite('Score', () => {
