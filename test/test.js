@@ -78,3 +78,40 @@ suite('Score', () => {
     testProp('ties', ties)
   }
 })
+
+suite('EvaluateOutcome', () => {
+  let evaluateOutcome
+  setup(() => {
+    evaluateOutcome = createEvaluateOutcome(choices, outcomes)
+  })
+
+  test('rock beats scissors', testOutcomes(choices.ROCK, choices.SCISSORS))
+  test('scissors beats paper', testOutcomes(choices.SCISSORS, choices.PAPER))
+  test('paper beats rock', testOutcomes(choices.PAPER, choices.ROCK))
+  test('ties', testTies())
+
+  function testOutcomes(winningChoice, losingChoice) {
+    return () => {
+      let userChoice = winningChoice
+      let opponentChoice = losingChoice
+      let actual = evaluateOutcome.execute(userChoice, opponentChoice)
+      assert.equal(actual, outcomes.WIN, 'outcomes.WIN')
+
+      userChoice = losingChoice
+      opponentChoice = winningChoice
+      actual = evaluateOutcome.execute(userChoice, opponentChoice)
+      assert.equal(actual, outcomes.LOSS, 'outcomes.LOSS')
+    }
+  }
+
+  function testTies() {
+    return () =>
+      Object.values(choices).forEach(choice =>
+        assert.equal(
+          evaluateOutcome.execute(choice, choice),
+          outcomes.TIE,
+          choice
+        )
+      )
+  }
+})
