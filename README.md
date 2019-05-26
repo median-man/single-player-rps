@@ -11,7 +11,7 @@ it turned into an exercise of making a simple thing overly complicated.
 
 ## Play
 
-Open [index.html](index.html) in the browser and follow the on-screen directions
+Open [demo](https://median-man.github.io/single-player-rps/) in the browser and follow the on-screen directions
 to play.
 
 ## Test
