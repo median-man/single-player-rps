@@ -40,13 +40,41 @@ suite('outcomes', () => {
 })
 
 suite('Score', () => {
-  test('has wins, losses, and ties', () => {
-    const score = createScore()
-    const expected = {
-      wins: 0,
-      losses: 0,
-      ties: 0,
-    }
-    assert.deepEqual(score, expected)
+  let score
+  setup(() => {
+    score = createScore()
   })
+
+  test('initial wins, losses, ties are each 0', () => {
+    scoreHasExpectedState({ wins: 0, losses: 0, ties: 0 })
+  })
+
+  suite('increment', () => {
+    test('increment wins', () => {
+      testIncrement(outcomes.WIN, { wins: 1, losses: 0, ties: 0 })
+    })
+
+    test('increment losses', () => {
+      testIncrement(outcomes.LOSS, { wins: 0, losses: 1, ties: 0 })
+    })
+
+    test('increment ties', () => {
+      testIncrement(outcomes.TIE, { wins: 0, losses: 0, ties: 1 })
+    })
+
+    function testIncrement(outcome, expectedState) {
+      score.increment(outcome)
+      scoreHasExpectedState(expectedState)
+    }
+  })
+
+  function scoreHasExpectedState({ wins, losses, ties }) {
+    const testProp = (prop, expected) => {
+      assert.equal(score[prop](), expected, `score.${prop}()`)
+    }
+
+    testProp('wins', wins)
+    testProp('losses', losses)
+    testProp('ties', ties)
+  }
 })

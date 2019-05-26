@@ -7,13 +7,21 @@ const choices = Object.freeze({
 const outcomes = Object.freeze({
   WIN: 'win',
   LOSS: 'loss',
-  TIE: 'tie'
+  TIE: 'tie',
 })
 
 function createScore() {
+  let wins = 0
+  let losses = 0
+  let ties = 0
   return {
-    wins: 0,
-    losses: 0,
-    ties: 0,
+    wins: () => wins,
+    losses: () => losses,
+    ties: () => ties,
+    increment: outcome => {
+      if (outcome === outcomes.WIN) wins += 1
+      if (outcome === outcomes.LOSS) losses += 1
+      if (outcome === outcomes.TIE) ties += 1
+    },
   }
 }
