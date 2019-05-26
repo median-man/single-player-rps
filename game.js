@@ -62,8 +62,69 @@ function createHandleUserChoice({ score, evaluateOutcome, getOpponentChoice }) {
       return {
         userChoice,
         outcome,
-        opponentChoice
+        opponentChoice,
       }
     },
+  }
+}
+
+function createGame() {
+  const score = createScore()
+  const handleUserChoice = createHandleUserChoice({
+    score,
+    evaluateOutcome: createEvaluateOutcome(choices, outcomes),
+    getOpponentChoice: randomChoice(),
+  })
+
+  return {
+    wins: () => score.wins(),
+    losses: () => score.losses(),
+    ties: () => score.ties(),
+    handleUserChoice: choice => handleUserChoice.execute(choice),
+  }
+
+  function randomChoice() {
+    return () => {
+      const values = Object.values(choices)
+      const index = Math.floor(Math.random() * values.length)
+      return values[index]
+    }
+  }
+}
+
+function createBrowserView(rootElement) {
+  const game = createGame()
+
+  document.onkeyup = ({ key }) => {
+    const choice = getChoice(key)
+    if (choice) {
+      const result = game.handleUserChoice(choice)
+      render(result)
+    }
+  }
+  render({})
+
+  function getChoice(key) {
+    const keyChoiceMap = {
+      r: choices.ROCK,
+      p: choices.PAPER,
+      s: choices.SCISSORS,
+    }
+    return keyChoiceMap[key.toLowerCase()]
+  }
+
+  function render({
+    userChoice = null,
+    opponentChoice = null,
+    outcome = null,
+  }) {
+    rootElement.innerHTML = `
+      <p>wins: ${game.wins()}</p>
+      <p>losses: ${game.losses()}</p>
+      <p>ties: ${game.ties()}</p>
+      ${userChoice ? `<p>you chose: ${userChoice}</p>` : ''}
+      ${opponentChoice ? `<p>opponent chose: ${opponentChoice}</p>` : ''}
+      ${outcome ? `<p>You ${outcome}</p>` : ''}
+    `
   }
 }
