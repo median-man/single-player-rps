@@ -146,12 +146,9 @@ suite('handleUserChoice', () => {
   })
 })
 
-suite('makeNewGame', () => {
-  test('instantiates score properties', () => {
-    const game = makeNewGame()
-    assert.equal(game.wins(), 0, 'score.wins')
-    assert.equal(game.losses(), 0, 'score.losses')
-    assert.equal(game.ties(), 0, 'score.ties')
+  test('returns outcome', () => {
+    const userChoice = choices.PAPER
+    assert.equal(handleUserChoice.execute(userChoice), outcomes.LOSS)
   })
 
   // test('instantiates EvaluateOutcome', () => {
