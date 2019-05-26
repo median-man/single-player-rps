@@ -144,19 +144,14 @@ suite('handleUserChoice', () => {
     handleUserChoice.execute(userChoice)
     assert.scoreHasExpectedState(score, { wins: 0, losses: 1, ties: 0 })
   })
-})
 
-  test('returns outcome', () => {
+  test('returns outcome object', () => {
     const userChoice = choices.PAPER
-    assert.equal(handleUserChoice.execute(userChoice), outcomes.LOSS)
+    const expected = {
+      userChoice,
+      opponentChoice: getOpponentChoice(),
+      outcome: outcomes.LOSS
+    }
+    assert.deepEqual(handleUserChoice.execute(userChoice), expected)
   })
-
-  // test('instantiates EvaluateOutcome', () => {
-  //   const handleUserChoiceStub = {}
-  //   const createHandleUserChoiceStub = () => handleUserChoiceStub
-  //   const game = makeNewGame({
-  //     createHandleUserChoice: createHandleUserChoiceStub,
-  //   })
-  //   assert.equal(game.evaluateOutcome, handleUserChoiceStub)
-  // })
 })
