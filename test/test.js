@@ -6,6 +6,16 @@ assert.valuesAreUnique = obj => {
   assert.deepEqual(values, [...set])
 }
 assert.noEmptyStrings = obj => assert.notInclude(Object.values(obj), '')
+assert.scoreHasExpectedState = (score, expectedState) => {
+  const { wins, losses, ties } = expectedState
+  const testProp = (prop, expected) => {
+    assert.equal(score[prop](), expected, `score.${prop}()`)
+  }
+
+  testProp('wins', wins)
+  testProp('losses', losses)
+  testProp('ties', ties)
+}
 
 suite('choices', () => {
   test('enumerates ROCK, PAPER, SCISSORS', () => {
@@ -46,7 +56,7 @@ suite('Score', () => {
   })
 
   test('initial wins, losses, ties are each 0', () => {
-    scoreHasExpectedState({ wins: 0, losses: 0, ties: 0 })
+    assert.scoreHasExpectedState(score, { wins: 0, losses: 0, ties: 0 })
   })
 
   suite('increment', () => {
@@ -64,19 +74,9 @@ suite('Score', () => {
 
     function testIncrement(outcome, expectedState) {
       score.increment(outcome)
-      scoreHasExpectedState(expectedState)
+      assert.scoreHasExpectedState(score, expectedState)
     }
   })
-
-  function scoreHasExpectedState({ wins, losses, ties }) {
-    const testProp = (prop, expected) => {
-      assert.equal(score[prop](), expected, `score.${prop}()`)
-    }
-
-    testProp('wins', wins)
-    testProp('losses', losses)
-    testProp('ties', ties)
-  }
 })
 
 suite('EvaluateOutcome', () => {
@@ -114,4 +114,52 @@ suite('EvaluateOutcome', () => {
         )
       )
   }
+})
+
+suite('handleUserChoice', () => {
+  let score
+  let evaluateOutcome
+  let getOpponentChoice
+  let handleUserChoice
+
+  setup(() => {
+    evaluateOutcome = createEvaluateOutcome(choices, outcomes)
+    getOpponentChoice = () => choices.SCISSORS
+    score = createScore()
+    handleUserChoice = createHandleUserChoice({
+      score,
+      evaluateOutcome,
+      getOpponentChoice,
+    })
+  })
+
+  test('increments wins when user wins', () => {
+    const userChoice = choices.ROCK
+    handleUserChoice.execute(userChoice)
+    assert.scoreHasExpectedState(score, { wins: 1, losses: 0, ties: 0 })
+  })
+
+  test('increments losses when user loses', () => {
+    const userChoice = choices.PAPER
+    handleUserChoice.execute(userChoice)
+    assert.scoreHasExpectedState(score, { wins: 0, losses: 1, ties: 0 })
+  })
+})
+
+suite('makeNewGame', () => {
+  test('instantiates score properties', () => {
+    const game = makeNewGame()
+    assert.equal(game.wins(), 0, 'score.wins')
+    assert.equal(game.losses(), 0, 'score.losses')
+    assert.equal(game.ties(), 0, 'score.ties')
+  })
+
+  // test('instantiates EvaluateOutcome', () => {
+  //   const handleUserChoiceStub = {}
+  //   const createHandleUserChoiceStub = () => handleUserChoiceStub
+  //   const game = makeNewGame({
+  //     createHandleUserChoice: createHandleUserChoiceStub,
+  //   })
+  //   assert.equal(game.evaluateOutcome, handleUserChoiceStub)
+  // })
 })

@@ -52,3 +52,12 @@ function createEvaluateOutcome(choices, outcomes) {
     )
   }
 }
+
+function createHandleUserChoice({ score, evaluateOutcome, getOpponentChoice }) {
+  return {
+    execute: userChoice => {
+      const outcome = evaluateOutcome.execute(userChoice, getOpponentChoice())
+      score.increment(outcome)
+    },
+  }
+}
