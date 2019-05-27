@@ -10,14 +10,22 @@ const outcomes = Object.freeze({
 })
 
 function createGame(getOpponentChoice) {
+  let wins = 0
+
   return {
-    wins: () => 0,
+    wins: () => wins,
     losses: () => 0,
     ties: () => 0,
     evaluateUserChoice: userChoice => {
       const opponentChoice = getOpponentChoice()
-      if (userChoice === opponentChoice) return outcomes.TIE
-      return isWin(userChoice, opponentChoice) ? outcomes.WIN : outcomes.LOSS
+      if (userChoice === opponentChoice) {
+        return outcomes.TIE
+      }
+      if (isWin(userChoice, opponentChoice)) {
+        wins += 1
+        return outcomes.WIN
+      }
+      return outcomes.LOSS
     },
   }
 
