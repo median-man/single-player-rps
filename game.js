@@ -5,7 +5,7 @@ const choices = Object.freeze({
 })
 
 const outcomes = Object.freeze({
-  WIN: 'wins',
+  WIN: 'win',
   LOSS: 'loss',
   TIE: 'tie',
 })
@@ -41,4 +41,10 @@ function createGame(getOpponentChoice) {
       (userChoice === ROCK && opponentChoice === SCISSORS)
     )
   }
+}
+
+function randomChoice() {
+  const values = Object.values(choices)
+  const index = Math.floor(Math.random() * values.length)
+  return values[index]
 }
