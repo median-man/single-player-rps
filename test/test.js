@@ -1,6 +1,7 @@
 const { assert } = chai
 
 suite('Game', gameSuite)
+suite('choices', choicesSuite)
 
 function gameSuite() {
   test('initial game state', testInitialState)
@@ -74,4 +75,10 @@ function gameSuite() {
       })
     }
   }
+}
+
+function choicesSuite() {
+  test('enumerates ROCK, PAPER, SCISSORS', () => {
+    assert.containsAllKeys(choices, ['ROCK', 'PAPER', 'SCISSORS'])
+  })
 }
