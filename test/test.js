@@ -21,19 +21,9 @@ function gameSuite() {
       game = createGame(getOpponentChoice)
     })
 
-    test('returns outcome when user loses', testReturnsLoss)
-    test('returns outcome when user ties', testReturnsTie)
     suite('user wins', userWinsSuite)
-
-    function testReturnsLoss() {
-      const actual = game.evaluateUserChoice(choices.SCISSORS)
-      assert.equal(actual, outcomes.LOSS, 'outcomes.LOSS')
-    }
-
-    function testReturnsTie() {
-      const actual = game.evaluateUserChoice(choices.ROCK)
-      assert.equal(actual, outcomes.TIE, 'outcomes.TIE')
-    }
+    suite('user loses', userLosesSuite)
+    suite('user ties', userTiesSuite)
 
     function userWinsSuite() {
       test('scissors beats paper', () =>
@@ -58,6 +48,30 @@ function gameSuite() {
         const actual = game.evaluateUserChoice(userChoice)
         assert.equal(actual, outcomes.WIN, 'outcomes.WIN')
       }
+    }
+
+    function userLosesSuite() {
+      test('returns outcome when user loses', () => {
+        const actual = game.evaluateUserChoice(choices.SCISSORS)
+        assert.equal(actual, outcomes.LOSS, 'outcomes.LOSS')
+      })
+
+      test('updates losses', () => {
+        game.evaluateUserChoice(choices.SCISSORS)
+        assert.equal(game.losses(), 1, 'losses')
+      })
+    }
+
+    function userTiesSuite() {
+      test('returns outcome when user ties', () => {
+        const actual = game.evaluateUserChoice(choices.ROCK)
+        assert.equal(actual, outcomes.TIE, 'outcomes.TIE')
+      })
+
+      test('updates ties', () => {
+        game.evaluateUserChoice(choices.ROCK)
+        assert.equal(game.ties(), 1, 'ties')
+      })
     }
   }
 }
