@@ -6,8 +6,7 @@ A simple single player Rock, Paper, Scissors game for a web browser.
 
 ## About
 
-This has been built as a simple practice for JavaScript and clean coding. But,
-it turned into an exercise of making a simple thing overly complicated.
+This has been built as a simple practice for JavaScript and clean coding.
 
 ## Play
 
